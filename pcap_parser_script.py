@@ -1,7 +1,7 @@
 import os
 import pyshark as pys
-from RPL_Attack.PCAPManager import PCAPManager as pcapm
-from RPL_Attack.AttackDetector import VersionAttackDetector as VAD
+from PCAPManager import *
+from AttackDetector import *
 
 LOGS_FOLDER = "logs/"
 title = "PCAP PARSER"
@@ -102,9 +102,9 @@ if __name__ == "__main__":
         write_to_file("version.csv", set_of_VNs)
         write_to_file("rank.csv", set_of_ranks)
         send_message(title, "Pcap Parsing Process and Writing has Completed")
-        vad_obj = VAD(LOGS_FOLDER + "version.csv")
+        vad_obj = VersionAttackDetector(LOGS_FOLDER + "version.csv")
         req_res = vad_obj.parse_file
         print("The Version Number changed {} times over a period of {} seconds".format(req_res[0], req_res[1]))
     elif filter_value == "auto":
-        manager = pcapm(filename)
+        manager = PCAPManager(filename)
         manager.parse_pcap("icmpv6")
