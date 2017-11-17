@@ -24,7 +24,7 @@ Current Status: Ongoing
 1. For Version Attack
     - Log Files: logs/version.csv
     - Log Files: logs/ranks.csv
-    - Result: [Image of output](images/version_att_detection.png)
+    - Result: [Image of output](images/version_att_detection.png?raw=true)
     - Collects the frequency of change in Version Number over the time Range
     - The result in the image is the IP Address of the node which affects the Version Number
 
