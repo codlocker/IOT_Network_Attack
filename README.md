@@ -25,6 +25,8 @@ Current Status: Ongoing
     - Log Files: logs/version.csv
     - Log Files: logs/ranks.csv
     - Result: [Image of output](images/version_att_detection.png)
+    - Collects the frequency of change in Version Number over the time Range
+    - The result in the image is the IP Address of the node which affects the Version Number
 
 2. For Collecting Packet Data for analyzing Sniffing Attacks
     - logs/RPL_DIO_Messages.csv

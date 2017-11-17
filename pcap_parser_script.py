@@ -38,7 +38,7 @@ def get_version_and_rank(packets):
 
         if rank != -1 or version_number != -1:
             ranks_set.add((source_ip, rank))
-            version_set.append((epoch_ts, version_number))
+            version_set.append((epoch_ts, source_ip, version_number))
     return ranks_set, version_set
 
 
