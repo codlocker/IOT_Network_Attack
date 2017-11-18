@@ -8,19 +8,34 @@ class VersionAttackDetector:
         self.filename = file
 
     def get_attacker_node(self):
+        """
+
+        :rtype: dict
+        """
         version_txt = open(self.filename, mode="r")
         possible_attack_nodes = dict()
         # TODO: Currently Hardcoded to Default Value of CONTIKI. Need to work around it
         init_version = 240
         for line in version_txt:
             res = line.split(",")
-            if init_version == int(res[2]): # Check only for First Occurence
+            if init_version == int(res[2]):  # Check only for First Occurence
                 if res[1] in possible_attack_nodes.keys():
                     possible_attack_nodes[res[1]] += 1
                 else:
                     possible_attack_nodes[res[1]] = 1
                 init_version = (init_version + 1) % 257
         return possible_attack_nodes
+
+    @staticmethod
+    def print_error_probabilities(v_dict):
+        """
+
+        :rtype: None
+        """
+        sum_all = sum(list(v_dict.values()))
+        for key in v_dict.keys():
+            val = v_dict[key] / sum_all
+            print("Probability: {} is {}".format(key, val))
 
     @property
     def parse_file(self):
@@ -45,5 +60,6 @@ class VersionAttackDetector:
         # Possible Value of the Attacker Node
         possible_attackers = VersionAttackDetector.get_attacker_node(self)
         if possible_attackers[max(possible_attackers)] > 1:
-            print("The possible Attacker Nodes in this set is ", max(possible_attackers))
+            VersionAttackDetector.print_error_probabilities(possible_attackers)
+            print('The possible Attacker node in this set is ', max(possible_attackers))
         return count, time_range
