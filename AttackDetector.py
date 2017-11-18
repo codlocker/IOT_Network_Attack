@@ -44,5 +44,6 @@ class VersionAttackDetector:
         print("Version Number has a Variance of " + str(std_vn ** 0.5) + " in a time range of " + str(time_range))
         # Possible Value of the Attacker Node
         possible_attackers = VersionAttackDetector.get_attacker_node(self)
-        print("The possible Attacker Nodes in this set is ", max(possible_attackers))
+        if possible_attackers[max(possible_attackers)] > 1:
+            print("The possible Attacker Nodes in this set is ", max(possible_attackers))
         return count, time_range
