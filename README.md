@@ -4,8 +4,11 @@
 Find the node causing the Network Attack
 
 Objectives:
+
     - Obtain data related to packet transmissions basically the pcap File
+    
     - Parse the data and get the Version Number, Rank and related info for path data of the packet
+    
     - Compute the attacking node and display the possible alternatives
 
 Current Status: **Completed**
