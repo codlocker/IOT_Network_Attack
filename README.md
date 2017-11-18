@@ -29,5 +29,10 @@ Current Status: Ongoing
     - The result in the image is the IP Address of the node which affects the Version Number
 
 2. For Collecting Packet Data for analyzing Sniffing Attacks
-    - logs/RPL_DIO_Messages.csv
-    - logs/RPL_DIS_Messages.csv
+    - Open logs Folder
+    - The folders in it refer each radiolog File Parsed
+    - RPL_DIO_Meassges.csv, RPL_DIS_Messages.csv are the files that are present in it required for the Sniffing Attacks
+
+#### Developers
+    - Ipsit Sahoo
+    - Naman Goyal

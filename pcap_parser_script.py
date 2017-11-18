@@ -8,7 +8,7 @@ title = "PCAP PARSER"
 
 
 def write_to_file(file_name, data):
-    file = open("logs/" + file_name, mode="w")
+    file = open(LOGS_FOLDER + file_name, mode="w")
     for d in data:
         str_val = ""
         d_len = len(d)
@@ -83,6 +83,12 @@ if __name__ == "__main__":
     print(radioFiles)
     file_id = int(input("Enter the id of the pcap value to parse:"))
     filename = "./../" + radioFiles[file_id - 1]
+    file_uid = radioFiles[file_id - 1].split(".")[0]
+    # Create a Directory for Reach RadioLog
+    if not os.path.exists("logs/" + file_uid):
+        os.makedirs("logs/" + file_uid)
+    LOGS_FOLDER = "logs/" + file_uid + "/"
+    print(LOGS_FOLDER)
     print("Enter the Fiter Value")
     filter_value = input().lower()
     data_of_packets = []
@@ -106,5 +112,5 @@ if __name__ == "__main__":
         req_res = vad_obj.parse_file
         print("The Version Number changed {} times over a period of {} seconds".format(req_res[0], req_res[1]))
     elif filter_value == "auto":
-        manager = PCAPManager(filename)
+        manager = PCAPManager(filename, LOGS_FOLDER)
         manager.parse_pcap("icmpv6")

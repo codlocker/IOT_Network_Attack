@@ -5,22 +5,23 @@ import time
 
 class PCAPManager:
     rpl_control_msg_data = ""
-    rcm_list, dio_msg_list = [], []
+    rcm_list, dio_msg_list, first_row = [], [], []
     rcm_file = ""
-    dio_msg_file = ""
-    first_row = []
+    dio_msg_file, LOGS_FOLDER = "", ""
 
-    def __init__(self, file):
+    def __init__(self, file, logs):
         self.rpl_control_msg_data = file
+        self.file_uid = self.rpl_control_msg_data.split(".")[0]
         self.rcm_file = "RPL_DIS_Messages.csv"
         self.dio_msg_file = "RPL_DIO_Messages.csv"
+        self.LOGS_FOLDER = logs
 
     @staticmethod
     def write_to_file(file_name, data, first_row=None):
-        if os.path.isfile("logs/" + file_name):
-            file = open("logs/" + file_name, mode="a")
+        if os.path.isfile(file_name):
+            file = open(file_name, mode="a")
         else:
-            file = open("logs/" + file_name, mode="w")
+            file = open(file_name, mode="w")
             str_val = ""
             for v in range(0, len(first_row) - 1):
                 str_val += (str(first_row[v]) + ",")
@@ -116,7 +117,7 @@ class PCAPManager:
                 # print(self.rcm_list)
                 if count % 200 == 0:
                     print(count)
-                    self.write_to_file(self.rcm_file, self.rcm_list, first_row)
+                    self.write_to_file(self.LOGS_FOLDER + self.rcm_file, self.rcm_list, first_row)
                     self.rcm_list = []
             elif int(packet[3].code) == 1:
                 first_row = ["Frame Number", "Frame Length", "Frame Control Field", "Sequence Number",
@@ -130,6 +131,6 @@ class PCAPManager:
                 # print(self.rcm_list)
                 if count % 200 == 0:
                     print(count)
-                    self.write_to_file(self.dio_msg_file, self.dio_msg_list, first_row)
+                    self.write_to_file(self.LOGS_FOLDER + self.dio_msg_file, self.dio_msg_list, first_row)
                     self.dio_msg_list = []
         print("PCAP Parsing Ended in {0} secs for {1} data points".format(time.time() - t0, count))
