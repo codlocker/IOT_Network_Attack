@@ -1,6 +1,7 @@
 # IOT_Network_Attack
-**AIM**
 
+AIM
+====================
 Find the node causing the Network Attack
 
 Objectives:
@@ -32,9 +33,12 @@ Current Status: **Completed**
 ### OUTPUT
 
 1. For Version Attack
-    - Log Files: logs/<radiolog file Name>/version.csv
-    - Log Files: logs/<radiolog file Name>/ranks.csv
-    - Result: ![Image of output](images/version_att_detection.png) ![No Version Attack](images/no_attack.png)
+    - Log Files: logs/[radiolog file Name]/version.csv
+    - Log Files: logs/[radiolog file Name]/ranks.csv
+    - Result: 
+        ![First Image Version Number Attack](images/version_att_detection.png)
+        ![Second Image Version Number Attack](images/version_att_2.png) 
+        ![No Version Attack](images/no_attack.png)
     - Collects the frequency of change in Version Number over the time Range
     - The result in the image is the IP Address of the node which affects the Version Number and possibly causing the Version Number Attack
 

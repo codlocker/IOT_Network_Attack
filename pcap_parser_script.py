@@ -1,5 +1,3 @@
-import os
-import pyshark as pys
 from PCAPManager import *
 from AttackDetector import *
 
@@ -89,7 +87,7 @@ if __name__ == "__main__":
         os.makedirs("logs/" + file_uid)
     LOGS_FOLDER = "logs/" + file_uid + "/"
     print(LOGS_FOLDER)
-    print("Enter the Fiter Value")
+    print("Enter the Filter Value")
     filter_value = input().lower()
     data_of_packets = []
     set_of_ranks = []

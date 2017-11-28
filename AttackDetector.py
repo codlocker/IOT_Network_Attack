@@ -14,8 +14,9 @@ class VersionAttackDetector:
         """
         version_txt = open(self.filename, mode="r")
         possible_attack_nodes = dict()
-        # TODO: Currently Hardcoded to Default Value of CONTIKI. Need to work around it
-        init_version = 240
+        # Get the initial Version Number as in the file
+        init_version = int(version_txt.readline().split(",")[2])
+        print("The initial Version is", init_version)
         for line in version_txt:
             res = line.split(",")
             if init_version == int(res[2]):  # Check only for First Occurence
