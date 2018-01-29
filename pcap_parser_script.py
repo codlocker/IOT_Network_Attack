@@ -76,9 +76,11 @@ def collect_no_of_packets_for_each_node(data):
 
     return list_of_count + list_of_data
 
+
 if __name__ == "__main__":
     radioFiles = get_pcap_files()
-    print(radioFiles)
+    for index, val in enumerate(radioFiles):
+        print(index + 1, val)
     file_id = int(input("Enter the id of the pcap value to parse:"))
     filename = "./../" + radioFiles[file_id - 1]
     file_uid = radioFiles[file_id - 1].split(".")[0]
