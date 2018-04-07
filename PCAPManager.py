@@ -79,7 +79,8 @@ class PCAPManager:
             frame_length = packets_data[0].frame_length
             frame_control_field = packets_data[0].fcf
             frame_number = count
-            each_row += [frame_number, frame_length, frame_control_field, sequence_number, extd_source, destination_pan, destination]
+            each_row += [frame_number, frame_length, frame_control_field, sequence_number, extd_source, destination_pan,
+                         destination]
 
             # Parsing the Next IPV6 Section
             ip_version = packets_data[2].ip_version
@@ -122,9 +123,12 @@ class PCAPManager:
             elif int(packet[3].code) == 1:
                 first_row = ["Frame Number", "Frame Length", "Frame Control Field", "Sequence Number",
                              "Extended Source", "Destination PAN", "Destination", "IP Version", "Layer Name",
-                             "IP Destination", "IP Source", "Hop Limit", "Next Packet Header", "RPL DAG ID", "Destination Advertisement Trigger Sequence",
-                             "DIO FLags", "DIO Instance", "DIO Rank", "DIO Version", "DIO Interval Doublings", "DIO Minimum Interval", "DIO Max Rank",
-                             "DIO Max Hop Rank", "ICMPV6 Option Length", "Checksum", "Checksum Status", "Code", "Reserved",
+                             "IP Destination", "IP Source", "Hop Limit", "Next Packet Header", "RPL DAG ID",
+                             "Destination Advertisement Trigger Sequence",
+                             "DIO FLags", "DIO Instance", "DIO Rank", "DIO Version", "DIO Interval Doublings",
+                             "DIO Minimum Interval", "DIO Max Rank",
+                             "DIO Max Hop Rank", "ICMPV6 Option Length", "Checksum", "Checksum Status", "Code",
+                             "Reserved",
                              "Packet Message"]
                 self.store_rpl_packet_data(packet, count)
                 # Write to File as CSV
