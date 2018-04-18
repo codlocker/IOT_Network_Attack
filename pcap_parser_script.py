@@ -6,6 +6,11 @@ title = "PCAP PARSER"
 
 
 def write_to_file(file_name, data):
+    """
+    Write to File to LOGS
+    :param file_name: string type
+    :param data data written as a CSV:
+    """
     file = open(LOGS_FOLDER + file_name, mode="w")
     for d in data:
         str_val = ""
@@ -18,35 +23,53 @@ def write_to_file(file_name, data):
 
 
 def get_pcap_files():
+    """
+    Get all pcap Files
+    :return: Return all pcap Files in the given list
+    """
     list_radio_files = [f for f in os.listdir("./..") if f.startswith('radiolog') and f.endswith('.pcap')]
     return list_radio_files
 
 
 def get_version_and_rank(packets):
+    """
+    :param packets: It is the packet object for the extracted/used pcap File
+    :rtype: Sets of rank and Version calculated for each set of IPs
+    """
     # print(dir(packets[487][3]))
     ranks_set = set()
     version_set = []
+    all_ips = set()
     for packet in packets:
         epoch_ts = packet.sniff_timestamp
         source_ip = packet[2].Src
+        all_ips.add(source_ip)
         list_dirs = list(dir(packet[3]))
         rank, version_number = -1, -1
         if 'rpl_dio_dagid' in list_dirs:
             rank, version_number = packet[3].rpl_dio_rank, packet[3].rpl_dio_version
-
         if rank != -1 or version_number != -1:
             ranks_set.add((source_ip, rank))
             version_set.append((epoch_ts, source_ip, version_number))
-    return ranks_set, version_set
+    return ranks_set, version_set, all_ips
 
 
 def send_message(tit, message):
+    """
+    :param tit: Title of the message
+    :param message: The message notif Contents
+    :rtype: Notification Message for GUI
+    """
     sentence = 'notify-send "{}" "{}"'.format(tit, message)
     os.system(sentence)
     return
 
 
 def get_packet_data_and_headers(packets):
+    """
+    :param packets: Packets in the pcap File
+    :rtype: data for each packet compprises of a list of epoch value, Source IP, Destination IP, Data in Packet
+    """
     data = []
     for packet in packets:
         epoch_ts = packet.sniff_timestamp
@@ -63,19 +86,26 @@ def get_packet_data_and_headers(packets):
 
 
 def collect_id_for_each_ip(ip_list, possible_attackers):
+    """
+    Get id for each IP and the answer to the main question
+    :param ip_list: List of IP Addresses
+    :param possible_attackers: List of attackers
+    :return: Whether it is a attacker
+    """
     print(ip_list)
     feature = VersionAttackFeatureDetails()
     get_learning_res = LearningAlgos("./../Datasets/training/dataset.json")
-    get_learning_res.create_dataframe()
+    min_data = get_learning_res.create_dataframe()
     with open("../Datasets/testing/dataset.txt", mode='r') as f:
         data = f.readlines()
         req_data = feature.get_required_data_from_txt(data)[1:]
+        # print(req_data)
         id_in_dataset = set(int(d[1]) for d in req_data)
     print(sorted(id_in_dataset))
     for i in range(0, len(possible_attackers)):
         node_no = input("Enter node no. for {}:\n".format(possible_attackers[i]["ip"]))
         possible_attackers[i]["node_in_view"] = node_no
-        verdict_res = feature.get_verdict_res(req_data, int(node_no))
+        verdict_res = feature.get_verdict_res(req_data, int(node_no), min_data)
         decision_tree_result = get_learning_res.perform_decision_tree_classification(verdict_res)
         if int(decision_tree_result[0]) == 2:
             possible_attackers[i]["node_status"] = "Attacker"
@@ -131,7 +161,7 @@ if __name__ == "__main__":
             send_message(title, "Pcap Parsing Process and Writing has Completed")
         elif filter_value == "icmpv6":
             packets_data = pys.FileCapture(filename, display_filter=filter_value)
-            set_of_ranks, set_of_VNs = get_version_and_rank(packets_data)
+            set_of_ranks, set_of_VNs, set_of_IPs = get_version_and_rank(packets_data)
             write_to_file("version.csv", set_of_VNs)
             write_to_file("rank.csv", set_of_ranks)
             send_message(title, "Pcap Parsing Process and Writing has Completed")
@@ -139,9 +169,8 @@ if __name__ == "__main__":
             req_res = vad_obj.parse_file
             print("The Version Number changed {} times over a period of {} seconds".format(req_res[0], req_res[1]))
             # Now Proving Which is attacker and which is not!!
-            set_of_ips = sorted(set(d[1] for d in set_of_VNs))
-            vad_obj.attacker_nodes = collect_id_for_each_ip(set_of_ips, vad_obj.attacker_nodes)
-            print(vad_obj.attacker_nodes)
+            set_of_ips = sorted(set_of_IPs)
+            print(collect_id_for_each_ip(set_of_ips, vad_obj.attacker_nodes))
         elif filter_value == "auto":
             manager = PCAPManager(filename, LOGS_FOLDER)
             manager.parse_pcap("icmpv6")
