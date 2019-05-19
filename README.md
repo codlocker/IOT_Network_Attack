@@ -14,6 +14,8 @@ Objectives:
 
 Current Status: **Completed**
 
+[LINK TO PAPER](https://link.springer.com/chapter/10.1007/978-3-030-16660-1_47)
+
 ### REQUIREMENTS
     - Linux
     - Python 3
@@ -46,7 +48,3 @@ Current Status: **Completed**
     - Open logs Folder
     - The folders in it refer each radiolog File Parsed
     - RPL_DIO_Meassges.csv, RPL_DIS_Messages.csv are the files that are present in it required for the Sniffing Attacks
-
-### Team Members
-    - Ipsit Sahoo
-    - Naman Goyal
